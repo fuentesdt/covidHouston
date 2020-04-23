@@ -15,7 +15,7 @@ x = lsqnonlin(fun,x0)
 handle2=figure(1);
 plot(rawdata.Day,rawdata.CasesReported,'ko',rawdata.Day,simplemodel(x),'b-')
 legend('Data','Best fit')
-xlabel('t')
+xlabel('Day')
 ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
 
 

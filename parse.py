@@ -52,7 +52,7 @@ rawdata = jsondata['elements'][1]['data']
 
 
 import csv
-with open('data.csv', 'w' ) as datafile:
+with open('datatmp.csv', 'w' ) as datafile:
     writer = csv.writer(datafile)
     writer.writerow(['Day','Date'] + rawdata[0][0][1:])
     for iii,idrow in enumerate(rawdata[0]):

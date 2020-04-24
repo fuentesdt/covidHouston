@@ -1,19 +1,67 @@
+from requests import get
+from requests.exceptions import RequestException
+from contextlib import closing
+from bs4 import BeautifulSoup
+import json
 
-rawdata = {"data":[[["Date","Cases reported","Total cases"],["March 15","2","43"],["16","0","43"],["17","8","51"],["18","20","71"],["19","12","83"],["20","35","118"],["21","34","152"],["22","14","166"],["23","33","199"],["24","86","285"],["25","87","372"],["26","89","461"],["27","73","534"],["28","276","810"],["29","119","929"],["30","125","1054"],["31","213","1267"],["April 1","273","1540"],["April 2","185","1725"],["3","304","2029"],["4","233","2262"],["5","177","2439"],["6","529","2968"],["7","414","3382"],["8","361","3743"],["9","808","4551"],["10","341","4892"],["11","391","5283"],["12","105","5388"],["13","199","5587"],["14","289","5876"],["15","311","6187"],["16","308","6495"],["17","313","6808"],["18","293","7101"],["19","225","7326"],["20","252","7578"],["21","230","7808"],["22","238","8046"],["23","207","8253"]]]}
+def simple_get(url):
+    """
+    Attempts to get the content at `url` by making an HTTP GET request.
+    If the content-type of response is some kind of HTML/XML, return the
+    text content, otherwise return None.
+    """
+    try:
+        with closing(get(url, stream=True)) as resp:
+            if is_good_response(resp):
+                return resp.content
+            else:
+                return None
 
+    except RequestException as e:
+        log_error('Error during requests to {0} : {1}'.format(url, str(e)))
+        return None
+
+
+def is_good_response(resp):
+    """
+    Returns True if the response seems to be HTML, False otherwise.
+    """
+    content_type = resp.headers['Content-Type'].lower()
+    return (resp.status_code == 200 
+            and content_type is not None 
+            and content_type.find('html') > -1)
+
+
+def log_error(e):
+    """
+    It is always a good idea to log errors. 
+    This function just prints them, but you can
+    make it do anything.
+    """
+    print(e)
+
+raw_html = simple_get('https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca')
+len(raw_html)
+
+html = BeautifulSoup(raw_html, 'html.parser')
+# @thomas-nguyen-3 @pvtruong-mdacc
+rawdatascript = html.select('script')[4].contents[0]
+jsondata = json.loads(rawdatascript[23:-1])
+rawdata = jsondata['elements'][1]['data']
 
 
 
 import csv
 with open('data.csv', 'w' ) as datafile:
     writer = csv.writer(datafile)
-    #writer.writerow(rawdata['data'][0][0])
-    writer.writerow(['Day'] + rawdata['data'][0][0])
-    for iii,idrow in enumerate(rawdata['data'][0]):
-      if iii > 0:
-        writer.writerow([iii] + idrow)
+    writer.writerow(['Day','Date'] + rawdata[0][0][1:])
+    for iii,idrow in enumerate(rawdata[0]):
+      print idrow
+      if iii == 19:
+        writer.writerow([iii, 'April ' + idrow[0],idrow[1], idrow[2].replace(',','')])
+      elif iii > 0:
+        writer.writerow([iii, idrow[0],idrow[1], idrow[2].replace(',','')])
 
-    #writer.writerow([1, "Linus Torvalds", "Linux Kernel"])
-    #writer.writerow([2, "Tim Berners-Lee", "World Wide Web"])
-    #writer.writerow([3, "Guido van Rossum", "Python Programming"])
+
+
 

@@ -1,3 +1,12 @@
-Raw data from:
+webscraping data from:
 
 https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/
+
+https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca
+
+simple Gaussian fit to local data to esimate the peak - covidcurvefit.m 
+
+
+daily update - 
+
+while [ 1 ] ; do  sleep 1day ; python parse.py; matlab covidcurvefit.m; git commit -m 'daily update'; git push ; done

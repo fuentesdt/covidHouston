@@ -5,7 +5,7 @@ rawdata = readtable('datatmp.csv');
 
 %Create an anonymous function that takes a value of the exponential decay rate r and returns a vector of differences from the model with that decay rate and the data.
 
-PeakDay = zeros(length(rawdata.Day),1);
+PeakDay = ones(length(rawdata.Day),1);
 
 for iii = 30:length(rawdata.Day)
    simplemodel = @(r) r(3)./(r(2)* sqrt(2.*pi))* exp(-.5 * ((rawdata.Day(1:iii) -r(1))/r(2)).^2 );

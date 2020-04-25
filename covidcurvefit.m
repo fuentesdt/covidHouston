@@ -6,6 +6,11 @@ rawdata = readtable('datatmp.csv');
 %Create an anonymous function that takes a value of the exponential decay rate r and returns a vector of differences from the model with that decay rate and the data.
 
 PeakDay = ones(length(rawdata.Day),1);
+Rsquare = NaN(length(rawdata.Day),1);
+
+handle3=figure(3);
+plot(rawdata.Day,rawdata.CasesReported,'ko')
+hold
 
 for iii = 30:length(rawdata.Day)
    simplemodel = @(r) r(3)./(r(2)* sqrt(2.*pi))* exp(-.5 * ((rawdata.Day(1:iii) -r(1))/r(2)).^2 );
@@ -17,19 +22,35 @@ for iii = 30:length(rawdata.Day)
    predictedvalues = simplemodel(x);
    [maxcase,idmax] = max(predictedvalues )
    PeakDay(iii) = idmax; 
-end
+   Rsquare(iii) = 1 - sum((rawdata.CasesReported(1:iii) - predictedvalues ).^2)/sum((rawdata.CasesReported(1:iii) - mean(rawdata.CasesReported)).^2);
 
+   plot(rawdata.Day(1:iii),predictedvalues,'b-')
+   xline(idmax)
+end
+legend('Data','Best fit')
+xlabel('Day')
+ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
+title(sprintf('%4.2f < Rsquare < %4.2f ',min(Rsquare),max(Rsquare) ))
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+saveas(handle3,'evolution','png')
+
+
+%plot 
 handle1=figure(1);
 plot(rawdata.Day,rawdata.CasesReported,'ko',rawdata.Day,predictedvalues,'b-')
 xline(idmax)
 legend('Data','Best fit')
 xlabel('Day')
 ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
+title(sprintf('Rsquare = %4.2f ',Rsquare(length(Rsquare)) ))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
 xtickangle(45)
 saveas(handle1,'simplefit','png')
 
+%plot 
 handle2=figure(2);
 plot(rawdata.Day,PeakDay,'k')
 xlabel('Day')

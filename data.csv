@@ -1,4 +1,4 @@
-Day,Date,CasesReported,TotalCases,predictedvalues,PeakDay
+Day,Date,CasesReported,TotalCases,PredictedValues,PeakDay
 1,March 15,2,43,8.48605213938846,1
 2,16,0,43,11.2730588709147,1
 3,17,8,51,14.8109387416303,1

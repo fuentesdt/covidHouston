@@ -1,0 +1,258 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Gaussian curve fit to local covid-19 data</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-04-26"><meta name="DC.source" content="covidcurvefit.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Gaussian curve fit to local covid-19 data</h1><!--introduction--><p>Fit a Gaussian curve to local covid case data</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Local data source</a></li><li><a href="#2">Stability of peak estimate</a></li><li><a href="#3">Current Gaussian curve fit to local data</a></li><li><a href="#4">Peak day change with updated data</a></li><li><a href="#5">WIP - bokeh interactive plot</a></li></ul></div><h2 id="1">Local data source</h2><div><ul><li><a href="https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/">https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/</a></li><li><a href="https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca">https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+
+
+<span class="comment">% use python for webscraping of data to output _datatmp.csv_</span>
+<span class="comment">% python parse.py</span>
+datetime(now,<span class="string">'ConvertFrom'</span>,<span class="string">'datenum'</span>)
+rawdata = readtable(<span class="string">'datatmp.csv'</span>);
+
+<span class="comment">% work arrays</span>
+PeakDay = ones(length(rawdata.Day),1);
+Rsquare = NaN(length(rawdata.Day),1);
+</pre><pre class="codeoutput">
+ans = 
+
+  datetime
+
+   26-Apr-2020 18:06:23
+
+Warning: Table variable names were modified to make them valid MATLAB
+identifiers. The original names are saved in the VariableDescriptions property. 
+</pre><h2 id="2">Stability of peak estimate</h2><p>plot raw data</p><pre class="codeinput">handle3=figure(3);
+plot(rawdata.Day,rawdata.CasesReported,<span class="string">'ko'</span>)
+hold
+
+<span class="comment">% iteratively add curve fits to raw data starting at day 30</span>
+<span class="keyword">for</span> iii = 30:length(rawdata.Day)
+   simplemodel = @(r) r(3)./(r(2)* sqrt(2.*pi))* exp(-.5 * ((rawdata.Day(1:iii) -r(1))/r(2)).^2 );
+   fun = @(r) simplemodel(r) - rawdata.CasesReported(1:iii);
+
+   x0 = [27,50,800];
+   opts1=  optimset(<span class="string">'display'</span>,<span class="string">'off'</span>);
+   x = lsqnonlin(fun,x0,[],[],opts1);
+
+   PredictedValues = simplemodel(x);
+   [maxcase,idmax] = max(PredictedValues );
+   PeakDay(iii) = idmax;
+   Rsquare(iii) = 1 - sum((rawdata.CasesReported(1:iii) - PredictedValues ).^2)/sum((rawdata.CasesReported(1:iii) - mean(rawdata.CasesReported)).^2);
+
+   plot(rawdata.Day(1:iii),PredictedValues,<span class="string">'b-'</span>)
+   xline(idmax);
+<span class="keyword">end</span>
+legend(<span class="string">'Data'</span>,<span class="string">'Best fit'</span>)
+xlabel(<span class="string">'Day'</span>)
+ylabel(sprintf(<span class="string">'%4.1f * N(%4.1f,%4.1f)'</span>,x(3),x(1),x(2)))
+title(sprintf(<span class="string">'%4.2f &lt; Rsquare &lt; %4.2f '</span>,min(Rsquare),max(Rsquare) ))
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+saveas(handle3,<span class="string">'evolution'</span>,<span class="string">'png'</span>)
+</pre><pre class="codeoutput">Current plot held
+</pre><img vspace="5" hspace="5" src="covidcurvefit_01.png" alt=""> <h2 id="3">Current Gaussian curve fit to local data</h2><p>plot the curve fit with all available data</p><pre class="codeinput">handle1=figure(1);
+plot(rawdata.Day,rawdata.CasesReported,<span class="string">'ko'</span>,rawdata.Day,PredictedValues,<span class="string">'b-'</span>)
+xline(idmax);
+legend(<span class="string">'Data'</span>,<span class="string">'Best fit'</span>)
+xlabel(<span class="string">'Day'</span>)
+ylabel(sprintf(<span class="string">'%4.1f * N(%4.1f,%4.1f)'</span>,x(3),x(1),x(2)))
+title(sprintf(<span class="string">'Rsquare = %4.2f '</span>,Rsquare(length(Rsquare)) ))
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+saveas(handle1,<span class="string">'simplefit'</span>,<span class="string">'png'</span>)
+</pre><img vspace="5" hspace="5" src="covidcurvefit_02.png" alt=""> <h2 id="4">Peak day change with updated data</h2><p>plot the sensitivity of the peak day to the available data starting from day 30</p><pre class="codeinput">handle2=figure(2);
+plot(rawdata.Day,PeakDay,<span class="string">'k'</span>)
+xlabel(<span class="string">'Day'</span>)
+ylabel(<span class="string">'Peak Day'</span>)
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+yticks(rawdata.Day(1:2:length(rawdata.Day)))
+yticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+ytickangle(45)
+grid <span class="string">on</span>
+saveas(handle2,<span class="string">'peakday'</span>,<span class="string">'png'</span>)
+
+<span class="comment">% write table</span>
+writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),<span class="string">'data.csv'</span>)
+</pre><img vspace="5" hspace="5" src="covidcurvefit_03.png" alt=""> <h2 id="5">WIP - bokeh interactive plot</h2><p>
+<iframe src="bokeh/flowers.html"
+    sandbox="allow-same-origin allow-scripts"
+    width="100%"
+    height="500"
+    scrolling="no"
+    seamless="seamless"
+    frameborder="0">
+</iframe>
+</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Gaussian curve fit to local covid-19 data
+% Fit a Gaussian curve to local covid case data
+
+
+%% Local data source 
+%
+% * <https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/>
+% * <https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca>
+clear all
+close all
+
+
+% use python for webscraping of data to output _datatmp.csv_
+% python parse.py
+datetime(now,'ConvertFrom','datenum')
+rawdata = readtable('datatmp.csv');
+
+% work arrays
+PeakDay = ones(length(rawdata.Day),1);
+Rsquare = NaN(length(rawdata.Day),1);
+
+%% Stability of peak estimate
+% plot raw data
+handle3=figure(3);
+plot(rawdata.Day,rawdata.CasesReported,'ko')
+hold
+
+% iteratively add curve fits to raw data starting at day 30
+for iii = 30:length(rawdata.Day)
+   simplemodel = @(r) r(3)./(r(2)* sqrt(2.*pi))* exp(-.5 * ((rawdata.Day(1:iii) -r(1))/r(2)).^2 );
+   fun = @(r) simplemodel(r) - rawdata.CasesReported(1:iii);
+   
+   x0 = [27,50,800];
+   opts1=  optimset('display','off');
+   x = lsqnonlin(fun,x0,[],[],opts1);
+   
+   PredictedValues = simplemodel(x);
+   [maxcase,idmax] = max(PredictedValues );
+   PeakDay(iii) = idmax; 
+   Rsquare(iii) = 1 - sum((rawdata.CasesReported(1:iii) - PredictedValues ).^2)/sum((rawdata.CasesReported(1:iii) - mean(rawdata.CasesReported)).^2);
+
+   plot(rawdata.Day(1:iii),PredictedValues,'b-')
+   xline(idmax);
+end
+legend('Data','Best fit')
+xlabel('Day')
+ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
+title(sprintf('%4.2f < Rsquare < %4.2f ',min(Rsquare),max(Rsquare) ))
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+saveas(handle3,'evolution','png')
+
+
+%% Current Gaussian curve fit to local data
+% plot the curve fit with all available data
+handle1=figure(1);
+plot(rawdata.Day,rawdata.CasesReported,'ko',rawdata.Day,PredictedValues,'b-')
+xline(idmax);
+legend('Data','Best fit')
+xlabel('Day')
+ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
+title(sprintf('Rsquare = %4.2f ',Rsquare(length(Rsquare)) ))
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+saveas(handle1,'simplefit','png')
+
+%% Peak day change with updated data
+% plot the sensitivity of the peak day to the available data starting from day 30
+handle2=figure(2);
+plot(rawdata.Day,PeakDay,'k')
+xlabel('Day')
+ylabel('Peak Day')
+xticks(rawdata.Day(1:2:length(rawdata.Day)))
+xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+xtickangle(45)
+yticks(rawdata.Day(1:2:length(rawdata.Day)))
+yticklabels(rawdata.Date(1:2:length(rawdata.Date)))
+ytickangle(45)
+grid on
+saveas(handle2,'peakday','png')
+
+% write table
+writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),'data.csv')
+
+
+%% WIP - bokeh interactive plot
+%
+% <html>
+% <iframe src="bokeh/flowers.html"
+%     sandbox="allow-same-origin allow-scripts"
+%     width="100%"
+%     height="500"
+%     scrolling="no"
+%     seamless="seamless"
+%     frameborder="0">
+% </iframe>
+% </html>
+
+##### SOURCE END #####
+--></body></html>

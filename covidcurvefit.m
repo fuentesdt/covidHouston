@@ -3,15 +3,17 @@
 
 
 %% Local data source 
+% use python for webscraping of data to output _datatmp.csv_
+%
+% python parse.py
 %
 % * <https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/>
 % * <https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca>
+% * <https://github.com/fuentesdt/covidHouston source code>
 clear all
 close all
 
 
-% use python for webscraping of data to output _datatmp.csv_
-% python parse.py
 datetime(now,'ConvertFrom','datenum')
 rawdata = readtable('datatmp.csv');
 

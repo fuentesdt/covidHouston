@@ -66,12 +66,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Gaussian curve fit to local covid-19 data</h1><!--introduction--><p>Fit a Gaussian curve to local covid case data</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Local data source</a></li><li><a href="#2">Stability of peak estimate</a></li><li><a href="#3">Current Gaussian curve fit to local data</a></li><li><a href="#4">Peak day change with updated data</a></li><li><a href="#5">WIP - bokeh interactive plot</a></li></ul></div><h2 id="1">Local data source</h2><div><ul><li><a href="https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/">https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/</a></li><li><a href="https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca">https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
+  </style></head><body><div class="content"><h1>Gaussian curve fit to local covid-19 data</h1><!--introduction--><p>Fit a Gaussian curve to local covid case data</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Local data source</a></li><li><a href="#2">Stability of peak estimate</a></li><li><a href="#3">Current Gaussian curve fit to local data</a></li><li><a href="#4">Peak day change with updated data</a></li><li><a href="#5">WIP - bokeh interactive plot</a></li></ul></div><h2 id="1">Local data source</h2><p>use python for webscraping of data to output <i>datatmp.csv</i></p><p>python parse.py</p><div><ul><li><a href="https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/">https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/</a></li><li><a href="https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca">https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca</a></li><li><a href="https://github.com/fuentesdt/covidHouston">source code</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
 close <span class="string">all</span>
 
 
-<span class="comment">% use python for webscraping of data to output _datatmp.csv_</span>
-<span class="comment">% python parse.py</span>
 datetime(now,<span class="string">'ConvertFrom'</span>,<span class="string">'datenum'</span>)
 rawdata = readtable(<span class="string">'datatmp.csv'</span>);
 
@@ -83,7 +81,7 @@ ans =
 
   datetime
 
-   26-Apr-2020 18:06:23
+   26-Apr-2020 18:26:30
 
 Warning: Table variable names were modified to make them valid MATLAB
 identifiers. The original names are saved in the VariableDescriptions property. 
@@ -159,15 +157,17 @@ writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),<span class="string
 
 
 %% Local data source 
+% use python for webscraping of data to output _datatmp.csv_
+%
+% python parse.py
 %
 % * <https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/>
 % * <https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca>
+% * <https://github.com/fuentesdt/covidHouston source code>
 clear all
 close all
 
 
-% use python for webscraping of data to output _datatmp.csv_
-% python parse.py
 datetime(now,'ConvertFrom','datenum')
 rawdata = readtable('datatmp.csv');
 

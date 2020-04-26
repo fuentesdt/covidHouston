@@ -14,7 +14,7 @@
 daily update 
 ============
 
-while [ 1 ] ; do  sleep 1d ; make -B make dailyupdate ; done
+while [ 1 ] ; do  sleep 1d ; make -B dailyupdate ; done
 
 
 

@@ -14,7 +14,7 @@
 daily update 
 ============
 
-while [ 1 ] ; do  sleep 1d ; python parse.py; matlab -nodisplay -nodesktop -r "opts.outputDir = 'docs'; opts.format = 'html'; publish('covidcurvefit',opts);quit"; git commit -m 'daily update' data.csv peakday.png simplefit.png ; git push ; done
+while [ 1 ] ; do  sleep 1d ; python parse.py; matlab -nodisplay -nodesktop -r "opts.outputDir = 'docs'; opts.format = 'html'; publish('covidcurvefit',opts);quit"; git commit -m 'daily update' . ; git push ; done
 
 
 

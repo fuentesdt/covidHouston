@@ -3,6 +3,7 @@ from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
 import json
+import datetime
 
 def simple_get(url):
     """
@@ -47,20 +48,27 @@ html = BeautifulSoup(raw_html, 'html.parser')
 # @thomas-nguyen-3 @pvtruong-mdacc
 rawdatascript = html.select('script')[4].contents[0]
 jsondata = json.loads(rawdatascript[23:-1])
+updatedate = datetime.datetime.strptime( jsondata['updatedAt'].split('T')[0] , '%Y-%m-%d')
 rawdata = jsondata['elements'][1]['data']
 
+# FIXME - RW from file?
+lastupdate = datetime.datetime.strptime( '2020-04-24' , '%Y-%m-%d')
 
 
-import csv
-with open('datatmp.csv', 'w' ) as datafile:
-    writer = csv.writer(datafile)
-    writer.writerow(['Day','Date'] + rawdata[0][0][1:])
-    for iii,idrow in enumerate(rawdata[0]):
-      print idrow
-      if iii == 19:
-        writer.writerow([iii, 'April ' + idrow[0],idrow[1], idrow[2].replace(',','')])
-      elif iii > 0:
-        writer.writerow([iii, idrow[0],idrow[1], idrow[2].replace(',','')])
+if (lastupdate  < updatedate) :
+  print "New data Found"
+  import csv
+  with open('datatmp.csv', 'w' ) as datafile:
+      writer = csv.writer(datafile)
+      writer.writerow(['Day','Date'] + rawdata[0][0][1:])
+      for iii,idrow in enumerate(rawdata[0]):
+        print idrow
+        if iii == 19:
+          writer.writerow([iii, 'April ' + idrow[0],idrow[1], idrow[2].replace(',','')])
+        elif iii > 0:
+          writer.writerow([iii, idrow[0],idrow[1], idrow[2].replace(',','')])
+else:
+  print "NO NEW DATA FOUND"
 
 
 

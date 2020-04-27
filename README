@@ -14,7 +14,7 @@
 daily update 
 ============
 
-while [ 1 ] ; do  sleep 1d ; make -B dailyupdate ; done
+while [ 1 ] ; do  sleep 1d ; python parse.py; make docs/covidcurvefit.html ; done
 
 
 

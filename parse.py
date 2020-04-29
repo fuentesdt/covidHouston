@@ -4,6 +4,7 @@ from contextlib import closing
 from bs4 import BeautifulSoup
 import json
 import datetime
+import os
 
 def simple_get(url):
     """
@@ -51,9 +52,9 @@ jsondata = json.loads(rawdatascript[23:-1])
 updatedate = datetime.datetime.strptime( jsondata['updatedAt'].split('T')[0] , '%Y-%m-%d')
 rawdata = jsondata['elements'][1]['data']
 
-# FIXME - RW from file?
-lastupdate = datetime.datetime.strptime( '2020-04-24' , '%Y-%m-%d')
-
+# read timestamp from file
+filetime = os.path.getmtime('datatmp.csv')
+lastupdate = datetime.datetime.fromtimestamp(filetime)
 
 if (lastupdate  < updatedate) :
   print "New data Found"
@@ -69,6 +70,7 @@ if (lastupdate  < updatedate) :
           writer.writerow([iii, idrow[0],idrow[1], idrow[2].replace(',','')])
 else:
   print "NO NEW DATA FOUND"
+  print("Last Modified Time : ", lastupdate )
 
 
 

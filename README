@@ -11,12 +11,10 @@
 (4) output to data.csv
 
 
-daily update 
+daily update check every 10min at 8am 
 ============
 
-while [ 1 ] ; do  sleep 1d ; python parse.py; make docs/covidcurvefit.html ; done
-
-
+while [ 1 ] ; do if [ `date +%H` -eq 8 ] ; then  echo 'run ... '; python parse.py; make docs/covidcurvefit.html ; sleep 10m ; else echo 'waiting for 8am... '; sleep 1h ; fi; done
 
 
 Publish

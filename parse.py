@@ -64,8 +64,11 @@ if (lastupdate  < updatedate) :
       writer.writerow(['Day','Date'] + rawdata[0][0][1:])
       for iii,idrow in enumerate(rawdata[0]):
         print idrow
+        #FIXME 
         if iii == 19:
           writer.writerow([iii, 'April ' + idrow[0],idrow[1], idrow[2].replace(',','')])
+        elif iii == 49:
+          writer.writerow([iii, 'May ' + idrow[0],idrow[1], idrow[2].replace(',','')])
         elif iii > 0:
           writer.writerow([iii, idrow[0],idrow[1], idrow[2].replace(',','')])
 else:

@@ -14,7 +14,7 @@
 daily update check every 10min at 8am 
 ============
 
-while [ 1 ] ; do if [ `date +%H` -le 9 ] || [ `date +%H` -ge 7 ]  ; then  echo 'run ... '; python parse.py; make docs/covidcurvefit.html ; sleep 30m ; else echo 'waiting for 7am... '; sleep 1h ; fi; done
+while [ 1 ] ; do if [ `date +%H` -le 9 ] && [ `date +%H` -ge 7 ]  ; then  echo 'run ... '; python parse.py; make docs/covidcurvefit.html ; sleep 30m ; else echo 'waiting for 7am... '; sleep 1h ; fi; done
 
 
 Publish

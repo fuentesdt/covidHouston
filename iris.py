@@ -21,8 +21,11 @@ colormap = {'setosa': 'red', 'versicolor': 'green', 'virginica': 'blue'}
 data['colors'] = ['blue' for x in data['Day']]
 
 hover = HoverTool(tooltips=[
+    ("Day", "@Day"),
     ("Date", "@Date"),
     ("Peak Day", "@PeakDay"),
+    ("Cases Reported", "@CasesReported"),
+    ("Predicted Cases", "@PredictedValues"),
     ("Total Cases", "@TotalCases")
     ])
 
@@ -34,7 +37,7 @@ p.yaxis.axis_label = 'Cases Reported'
 p.circle('Day', 'CasesReported', color='colors', 
          fill_alpha=0.2, size=10, source=ColumnDataSource(data))
 
-p.line('Day', 'predictedvalues', color='black', source=ColumnDataSource(data))
+p.line('Day', 'PredictedValues', color='black', source=ColumnDataSource(data))
 
 output_file('docs/bokeh/flowers.html')
 

@@ -46,7 +46,7 @@ for iii = 30:length(rawdata.Day)
 end
 legend('Data','Best fit')
 xlabel('Day')
-ylabel('Cases per Day')
+ylabel('Cases Reported')
 title(sprintf('%4.2f < Rsquare < %4.2f,  %4.1f * N(%4.1f,%4.1f)',min(Rsquare),max(Rsquare),x(3),x(1),x(2)))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
@@ -61,8 +61,8 @@ plot(rawdata.Day,rawdata.CasesReported,'ko',rawdata.Day,PredictedValues,'b-')
 xline(idmax);
 legend('Data','Best fit')
 xlabel('Day')
-ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
-title(sprintf('Rsquare = %4.2f ',Rsquare(length(Rsquare)) ))
+ylabel('Cases Reported')
+title(sprintf('Rsquare = %4.2f,  %4.1f * N(%4.1f,%4.1f)',Rsquare(length(Rsquare)), x(3),x(1),x(2)))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
 xtickangle(45)
@@ -87,7 +87,7 @@ saveas(handle2,'peakday','png')
 writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),'data.csv')
 
 
-%% WIP - bokeh interactive plot
+%% bokeh interactive plot
 %
 % <html>
 % <iframe src="bokeh/flowers.html"

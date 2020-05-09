@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Gaussian curve fit to local covid-19 data</h1><!--introduction--><p>Fit a Gaussian curve to local covid case data</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Local data source</a></li><li><a href="#2">Stability of peak estimate</a></li><li><a href="#3">Current Gaussian curve fit to local data</a></li><li><a href="#4">Peak day change with updated data</a></li><li><a href="#5">WIP - bokeh interactive plot</a></li></ul></div><h2 id="1">Local data source</h2><p>use python for webscraping of data to output <i>datatmp.csv</i></p><p>python parse.py</p><div><ul><li><a href="https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/">https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/</a></li><li><a href="https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca">https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca</a></li><li><a href="https://github.com/fuentesdt/covidHouston">source code</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
+  </style></head><body><div class="content"><h1>Gaussian curve fit to local covid-19 data</h1><!--introduction--><p>Fit a Gaussian curve to local covid case data</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Local data source</a></li><li><a href="#2">Stability of peak estimate</a></li><li><a href="#3">Current Gaussian curve fit to local data</a></li><li><a href="#4">Peak day change with updated data</a></li><li><a href="#5">bokeh interactive plot</a></li></ul></div><h2 id="1">Local data source</h2><p>use python for webscraping of data to output <i>datatmp.csv</i></p><p>python parse.py</p><div><ul><li><a href="https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/">https://www.click2houston.com/health/2020/04/01/all-the-data-and-charts-that-tell-the-story-of-coronavirus-in-the-houston-area/</a></li><li><a href="https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca">https://e.infogram.com/df363bec-e9b9-4eea-bee6-418fe93ec0ca</a></li><li><a href="https://github.com/fuentesdt/covidHouston">source code</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
 close <span class="string">all</span>
 
 
@@ -81,7 +81,7 @@ ans =
 
   datetime
 
-   09-May-2020 12:22:33
+   09-May-2020 12:35:23
 
 Warning: Table variable names were modified to make them valid MATLAB
 identifiers. The original names are saved in the VariableDescriptions property. 
@@ -108,7 +108,7 @@ hold
 <span class="keyword">end</span>
 legend(<span class="string">'Data'</span>,<span class="string">'Best fit'</span>)
 xlabel(<span class="string">'Day'</span>)
-ylabel(<span class="string">'Cases per Day'</span>)
+ylabel(<span class="string">'Cases Reported'</span>)
 title(sprintf(<span class="string">'%4.2f &lt; Rsquare &lt; %4.2f,  %4.1f * N(%4.1f,%4.1f)'</span>,min(Rsquare),max(Rsquare),x(3),x(1),x(2)))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
@@ -120,8 +120,8 @@ plot(rawdata.Day,rawdata.CasesReported,<span class="string">'ko'</span>,rawdata.
 xline(idmax);
 legend(<span class="string">'Data'</span>,<span class="string">'Best fit'</span>)
 xlabel(<span class="string">'Day'</span>)
-ylabel(sprintf(<span class="string">'%4.1f * N(%4.1f,%4.1f)'</span>,x(3),x(1),x(2)))
-title(sprintf(<span class="string">'Rsquare = %4.2f '</span>,Rsquare(length(Rsquare)) ))
+ylabel(<span class="string">'Cases Reported'</span>)
+title(sprintf(<span class="string">'Rsquare = %4.2f,  %4.1f * N(%4.1f,%4.1f)'</span>,Rsquare(length(Rsquare)), x(3),x(1),x(2)))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
 xtickangle(45)
@@ -141,7 +141,7 @@ saveas(handle2,<span class="string">'peakday'</span>,<span class="string">'png'<
 
 <span class="comment">% write table</span>
 writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),<span class="string">'data.csv'</span>)
-</pre><img vspace="5" hspace="5" src="covidcurvefit_03.png" alt=""> <h2 id="5">WIP - bokeh interactive plot</h2><p>
+</pre><img vspace="5" hspace="5" src="covidcurvefit_03.png" alt=""> <h2 id="5">bokeh interactive plot</h2><p>
 <iframe src="bokeh/flowers.html"
     sandbox="allow-same-origin allow-scripts"
     width="100%"
@@ -200,7 +200,7 @@ for iii = 30:length(rawdata.Day)
 end
 legend('Data','Best fit')
 xlabel('Day')
-ylabel('Cases per Day')
+ylabel('Cases Reported')
 title(sprintf('%4.2f < Rsquare < %4.2f,  %4.1f * N(%4.1f,%4.1f)',min(Rsquare),max(Rsquare),x(3),x(1),x(2)))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
@@ -215,8 +215,8 @@ plot(rawdata.Day,rawdata.CasesReported,'ko',rawdata.Day,PredictedValues,'b-')
 xline(idmax);
 legend('Data','Best fit')
 xlabel('Day')
-ylabel(sprintf('%4.1f * N(%4.1f,%4.1f)',x(3),x(1),x(2)))
-title(sprintf('Rsquare = %4.2f ',Rsquare(length(Rsquare)) ))
+ylabel('Cases Reported')
+title(sprintf('Rsquare = %4.2f,  %4.1f * N(%4.1f,%4.1f)',Rsquare(length(Rsquare)), x(3),x(1),x(2)))
 xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
 xtickangle(45)
@@ -241,7 +241,7 @@ saveas(handle2,'peakday','png')
 writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),'data.csv')
 
 
-%% WIP - bokeh interactive plot
+%% bokeh interactive plot
 %
 % <html>
 % <iframe src="bokeh/flowers.html"

@@ -41,4 +41,4 @@ p.line('Day', 'PredictedValues', color='black', source=ColumnDataSource(data))
 
 output_file('docs/bokeh/flowers.html')
 
-show(p)
+#show(p)

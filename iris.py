@@ -2,7 +2,7 @@
 import pandas as pd
 from bokeh.sampledata.iris import flowers
 
-from bokeh.plotting import figure, show, output_file
+from bokeh.plotting import figure, show, save, output_file
 from bokeh.models import ColumnDataSource, HoverTool
 
 
@@ -42,3 +42,4 @@ p.line('Day', 'PredictedValues', color='black', source=ColumnDataSource(data))
 output_file('docs/bokeh/flowers.html')
 
 #show(p)
+save(p)

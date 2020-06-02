@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Gaussian curve fit to local covid-19 data</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-01"><meta name="DC.source" content="covidcurvefit.m"><style type="text/css">
+      --><title>Gaussian curve fit to local covid-19 data</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-02"><meta name="DC.source" content="covidcurvefit.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -81,7 +81,7 @@ ans =
 
   datetime
 
-   01-Jun-2020 07:00:36
+   02-Jun-2020 07:01:22
 
 Warning: Table variable names were modified to make them valid MATLAB
 identifiers. The original names are saved in the VariableDescriptions property. 
@@ -114,8 +114,12 @@ xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
 xtickangle(45)
 saveas(handle3,<span class="string">'evolution'</span>,<span class="string">'png'</span>)
-</pre><pre class="codeoutput">Current plot held
-</pre><img vspace="5" hspace="5" src="covidcurvefit_01.png" alt=""> <h2 id="3">Current Gaussian curve fit to local data</h2><p>plot the curve fit with all available data</p><pre class="codeinput">handle1=figure(1);
+</pre><pre class="codeoutput error">Error using plot
+Invalid data argument.
+
+Error in covidcurvefit (line 27)
+plot(rawdata.Day,rawdata.CasesReported,'ko')
+</pre><h2 id="3">Current Gaussian curve fit to local data</h2><p>plot the curve fit with all available data</p><pre class="codeinput">handle1=figure(1);
 plot(rawdata.Day,rawdata.CasesReported,<span class="string">'ko'</span>,rawdata.Day,PredictedValues,<span class="string">'b-'</span>)
 xline(idmax);
 legend(<span class="string">'Data'</span>,<span class="string">'Best fit'</span>)
@@ -126,7 +130,7 @@ xticks(rawdata.Day(1:2:length(rawdata.Day)))
 xticklabels(rawdata.Date(1:2:length(rawdata.Date)))
 xtickangle(45)
 saveas(handle1,<span class="string">'simplefit'</span>,<span class="string">'png'</span>)
-</pre><img vspace="5" hspace="5" src="covidcurvefit_02.png" alt=""> <h2 id="4">Peak day change with updated data</h2><p>plot the sensitivity of the peak day to the available data starting from day 30</p><pre class="codeinput">handle2=figure(2);
+</pre><h2 id="4">Peak day change with updated data</h2><p>plot the sensitivity of the peak day to the available data starting from day 30</p><pre class="codeinput">handle2=figure(2);
 plot(rawdata.Day,PeakDay,<span class="string">'k'</span>)
 xlabel(<span class="string">'Day'</span>)
 ylabel(<span class="string">'Peak Day'</span>)
@@ -141,7 +145,7 @@ saveas(handle2,<span class="string">'peakday'</span>,<span class="string">'png'<
 
 <span class="comment">% write table</span>
 writetable(splitvars(table(rawdata,PredictedValues,PeakDay)),<span class="string">'data.csv'</span>)
-</pre><img vspace="5" hspace="5" src="covidcurvefit_03.png" alt=""> <h2 id="5">bokeh interactive plot</h2><p>
+</pre><h2 id="5">bokeh interactive plot</h2><p>
 <iframe src="bokeh/flowers.html"
     sandbox="allow-same-origin allow-scripts"
     width="100%"

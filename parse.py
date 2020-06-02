@@ -70,7 +70,7 @@ if (lastupdate  < updatedate) :
         elif iii == 49:
           writer.writerow([iii, 'May ' + idrow[0],idrow[1], idrow[2].replace(',','')])
         elif iii > 0:
-          writer.writerow([iii, idrow[0],idrow[1], idrow[2].replace(',','')])
+          writer.writerow([iii, idrow[0],idrow[1].replace(',',''), idrow[2].replace(',','')])
 else:
   print "NO NEW DATA FOUND"
   print("Last Modified Time : ", lastupdate )
